@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
   Optional<Vehicle> findByChassisNumber(String chassisNumber);
+
+  Optional<Vehicle> findByChassisNumberAndIdNot(String chassisNumber, Long id);
 }

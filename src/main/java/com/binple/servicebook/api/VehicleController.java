@@ -3,13 +3,16 @@ package com.binple.servicebook.api;
 import javax.naming.OperationNotSupportedException;
 import javax.validation.Valid;
 
+import com.binple.servicebook.payload.request.EditVehicleRequest;
 import com.binple.servicebook.payload.request.NewVehicleRequest;
+import com.binple.servicebook.payload.response.EditVehicleResponse;
 import com.binple.servicebook.payload.response.NewVehicleResponse;
 import com.binple.servicebook.service.VehicleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +36,9 @@ public class VehicleController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> update() throws OperationNotSupportedException {
-    return service.update();
+  public ResponseEntity<EditVehicleResponse> update(@PathVariable Long id,
+      @RequestBody @Valid EditVehicleRequest request) {
+    return service.update(id, request);
   }
 
   @GetMapping("/search")

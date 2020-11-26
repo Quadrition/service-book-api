@@ -3,7 +3,7 @@ package com.binple.servicebook.payload.response;
 import com.binple.servicebook.model.VehicleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class NewVehicleResponse {
+public class EditVehicleResponse {
 
   @JsonProperty("id")
   private Long id;
@@ -29,7 +29,7 @@ public class NewVehicleResponse {
   @JsonProperty("chassisNumber")
   private String chassisNumber;
 
-  protected NewVehicleResponse() {
+  protected EditVehicleResponse() {
 
   }
 

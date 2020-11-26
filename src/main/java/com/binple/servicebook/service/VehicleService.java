@@ -5,8 +5,11 @@ import java.util.Optional;
 import javax.naming.OperationNotSupportedException;
 
 import com.binple.servicebook.exception.VehicleAlreadyExistsException;
+import com.binple.servicebook.exception.VehicleNotFoundException;
 import com.binple.servicebook.model.Vehicle;
+import com.binple.servicebook.payload.request.EditVehicleRequest;
 import com.binple.servicebook.payload.request.NewVehicleRequest;
+import com.binple.servicebook.payload.response.EditVehicleResponse;
 import com.binple.servicebook.payload.response.NewVehicleResponse;
 import com.binple.servicebook.repository.VehicleRepository;
 
@@ -42,8 +45,25 @@ public class VehicleService {
     }
   }
 
-  public ResponseEntity<Object> update() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
+  public ResponseEntity<EditVehicleResponse> update(Long id, EditVehicleRequest request) {
+    Optional<Vehicle> entity = repository.findById(id);
+
+    if (!entity.isPresent()) {
+      throw new VehicleNotFoundException("Vehicle with the given id not found");
+    } else {
+      Optional<Vehicle> duplicate = repository.findByChassisNumberAndIdNot(request.getChassisNumber(), id);
+
+      if (duplicate.isPresent()) {
+        throw new VehicleAlreadyExistsException("Vehicle with the given chassis number already exists");
+      } else {
+        Vehicle vehicle = entity.get();
+        modelMapper.map(request, vehicle);
+
+        repository.save(vehicle);
+
+        return new ResponseEntity<>(modelMapper.map(vehicle, EditVehicleResponse.class), HttpStatus.OK);
+      }
+    }
   }
 
   public ResponseEntity<Object> search() throws OperationNotSupportedException {
