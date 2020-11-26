@@ -1,26 +1,32 @@
 package com.binple.servicebook.api;
 
-import javax.naming.OperationNotSupportedException;
+import java.util.Set;
+
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 import com.binple.servicebook.payload.request.EditVehicleRequest;
 import com.binple.servicebook.payload.request.NewVehicleRequest;
 import com.binple.servicebook.payload.response.EditVehicleResponse;
 import com.binple.servicebook.payload.response.NewVehicleResponse;
+import com.binple.servicebook.payload.response.SearchVehicleResponse;
 import com.binple.servicebook.service.VehicleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/vehicle")
+@Validated
 public class VehicleController {
 
   private final VehicleService service;
@@ -42,7 +48,8 @@ public class VehicleController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<Object> search() throws OperationNotSupportedException {
-    return service.search();
+  public ResponseEntity<Set<SearchVehicleResponse>> search(
+      @RequestParam @Pattern(regexp = "^[a-zA-Z0-9]{5,}$") String pattern) {
+    return service.search(pattern);
   }
 }

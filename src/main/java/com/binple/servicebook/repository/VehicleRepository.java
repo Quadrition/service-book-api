@@ -1,6 +1,7 @@
 package com.binple.servicebook.repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 import com.binple.servicebook.model.Vehicle;
 
@@ -13,4 +14,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
   Optional<Vehicle> findByChassisNumber(String chassisNumber);
 
   Optional<Vehicle> findByChassisNumberAndIdNot(String chassisNumber, Long id);
+
+  Set<Vehicle> findByChassisNumberLike(String chassisNumber);
 }

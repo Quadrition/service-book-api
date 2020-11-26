@@ -1,8 +1,8 @@
 package com.binple.servicebook.service;
 
 import java.util.Optional;
-
-import javax.naming.OperationNotSupportedException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.binple.servicebook.exception.VehicleAlreadyExistsException;
 import com.binple.servicebook.exception.VehicleNotFoundException;
@@ -11,6 +11,7 @@ import com.binple.servicebook.payload.request.EditVehicleRequest;
 import com.binple.servicebook.payload.request.NewVehicleRequest;
 import com.binple.servicebook.payload.response.EditVehicleResponse;
 import com.binple.servicebook.payload.response.NewVehicleResponse;
+import com.binple.servicebook.payload.response.SearchVehicleResponse;
 import com.binple.servicebook.repository.VehicleRepository;
 
 import org.modelmapper.ModelMapper;
@@ -66,7 +67,11 @@ public class VehicleService {
     }
   }
 
-  public ResponseEntity<Object> search() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
+  public ResponseEntity<Set<SearchVehicleResponse>> search(String pattern) {
+
+    Set<Vehicle> vehicles = repository.findByChassisNumberLike(pattern);
+
+    return new ResponseEntity<>(vehicles.stream().map(vehicle -> modelMapper.map(vehicle, SearchVehicleResponse.class))
+        .collect(Collectors.toSet()), HttpStatus.OK);
   }
 }
