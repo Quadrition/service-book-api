@@ -1,7 +1,10 @@
 package com.binple.servicebook.api;
 
 import javax.naming.OperationNotSupportedException;
+import javax.validation.Valid;
 
+import com.binple.servicebook.payload.request.NewVehicleServiceRequest;
+import com.binple.servicebook.payload.response.NewVehicleServiceResponse;
 import com.binple.servicebook.service.VehicleServiceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,8 +29,9 @@ public class VehicleServiceController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> insert() throws OperationNotSupportedException {
-    return service.insert();
+  public ResponseEntity<NewVehicleServiceResponse> insert(@RequestParam Long vehicleId,
+      @RequestBody @Valid NewVehicleServiceRequest request) {
+    return service.insert(vehicleId, request);
   }
 
   @PutMapping("/{id}")

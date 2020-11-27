@@ -3,6 +3,7 @@ package com.binple.servicebook.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -58,7 +59,7 @@ public class Vehicle extends Model {
   @Column(nullable = false)
   private String chassisNumber;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "vehicle_id")
   private Set<VehicleService> services = new HashSet<>();
 

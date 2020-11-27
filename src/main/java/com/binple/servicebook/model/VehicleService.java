@@ -31,7 +31,7 @@ public class VehicleService extends Model {
   @NotNull(message = "Date cannot be null")
   private java.time.LocalDate date;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "servicestation_id")
   private ServiceStation serviceStation;
 
