@@ -5,8 +5,11 @@ import java.util.Optional;
 import javax.naming.OperationNotSupportedException;
 
 import com.binple.servicebook.exception.VehicleNotFoundException;
+import com.binple.servicebook.exception.VehicleServiceNotFoundException;
 import com.binple.servicebook.model.Vehicle;
+import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
 import com.binple.servicebook.payload.request.NewVehicleServiceRequest;
+import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
 import com.binple.servicebook.payload.response.NewVehicleServiceResponse;
 import com.binple.servicebook.repository.VehicleRepository;
 import com.binple.servicebook.repository.VehicleServiceRepository;
@@ -51,8 +54,19 @@ public class VehicleServiceService {
     }
   }
 
-  public ResponseEntity<Object> update() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
+  public ResponseEntity<Object> update(Long id, EditVehicleServiceRequest request) {
+    Optional<com.binple.servicebook.model.VehicleService> entity = repository.findById(id);
+
+    if (!entity.isPresent()) {
+      throw new VehicleServiceNotFoundException("Vehicle service with the given id does not exists");
+    } else {
+      com.binple.servicebook.model.VehicleService vehicleService = entity.get();
+      modelMapper.map(request, vehicleService);
+
+      repository.save(vehicleService);
+
+      return new ResponseEntity<>(modelMapper.map(vehicleService, EditVehicleServiceResponse.class), HttpStatus.OK);
+    }
   }
 
   public ResponseEntity<Object> select() throws OperationNotSupportedException {

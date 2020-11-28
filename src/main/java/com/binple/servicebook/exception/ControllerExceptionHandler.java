@@ -27,6 +27,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(VehicleServiceNotFoundException.class)
+  protected ResponseEntity<Object> handleVehicleServiceNotFoundException(VehicleServiceNotFoundException ex,
+      WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
   @ExceptionHandler(ConstraintViolationException.class)
   protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex,
       WebRequest request) {
