@@ -2,7 +2,6 @@ package com.binple.servicebook.api;
 
 import java.util.Set;
 
-import javax.naming.OperationNotSupportedException;
 import javax.validation.Valid;
 
 import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
