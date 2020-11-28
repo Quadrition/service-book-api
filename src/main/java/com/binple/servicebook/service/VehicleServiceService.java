@@ -1,8 +1,8 @@
 package com.binple.servicebook.service;
 
 import java.util.Optional;
-
-import javax.naming.OperationNotSupportedException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.binple.servicebook.exception.VehicleNotFoundException;
 import com.binple.servicebook.exception.VehicleServiceNotFoundException;
@@ -11,6 +11,7 @@ import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
 import com.binple.servicebook.payload.request.NewVehicleServiceRequest;
 import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
 import com.binple.servicebook.payload.response.NewVehicleServiceResponse;
+import com.binple.servicebook.payload.response.SelectVehicleServiceResponse;
 import com.binple.servicebook.repository.VehicleRepository;
 import com.binple.servicebook.repository.VehicleServiceRepository;
 
@@ -70,7 +71,17 @@ public class VehicleServiceService {
     }
   }
 
-  public ResponseEntity<Object> select() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
+  public ResponseEntity<Set<SelectVehicleServiceResponse>> select(Long vehicleId) {
+    Optional<Vehicle> vehicleEntity = vehicleRepository.findById(vehicleId);
+
+    if (!vehicleEntity.isPresent()) {
+      throw new VehicleNotFoundException("Vehicle with the given id does not exists");
+    } else {
+      Vehicle vehicle = vehicleEntity.get();
+
+      return new ResponseEntity<>(vehicle.getSevices().stream()
+          .map(vehicleService -> modelMapper.map(vehicleService, SelectVehicleServiceResponse.class))
+          .collect(Collectors.toSet()), HttpStatus.OK);
+    }
   }
 }

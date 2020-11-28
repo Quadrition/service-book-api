@@ -1,13 +1,15 @@
 package com.binple.servicebook.api;
 
+import java.util.Set;
+
 import javax.naming.OperationNotSupportedException;
 import javax.validation.Valid;
 
 import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
 import com.binple.servicebook.payload.request.NewVehicleServiceRequest;
 import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
-import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
 import com.binple.servicebook.payload.response.NewVehicleServiceResponse;
+import com.binple.servicebook.payload.response.SelectVehicleServiceResponse;
 import com.binple.servicebook.service.VehicleServiceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class VehicleServiceController {
   }
 
   @GetMapping("/all")
-  public ResponseEntity<Object> select() throws OperationNotSupportedException {
-    return service.select();
+  public ResponseEntity<Set<SelectVehicleServiceResponse>> select(@RequestParam Long vehicleId) {
+    return service.select(vehicleId);
   }
 }
