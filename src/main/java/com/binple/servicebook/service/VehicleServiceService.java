@@ -54,7 +54,8 @@ public class VehicleServiceService {
     }
   }
 
-  public ResponseEntity<Object> update(Long id, EditVehicleServiceRequest request) {
+  // TODO insert service station check
+  public ResponseEntity<EditVehicleServiceResponse> update(Long id, EditVehicleServiceRequest request) {
     Optional<com.binple.servicebook.model.VehicleService> entity = repository.findById(id);
 
     if (!entity.isPresent()) {

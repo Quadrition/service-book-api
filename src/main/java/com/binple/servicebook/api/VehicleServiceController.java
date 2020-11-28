@@ -5,6 +5,8 @@ import javax.validation.Valid;
 
 import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
 import com.binple.servicebook.payload.request.NewVehicleServiceRequest;
+import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
+import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
 import com.binple.servicebook.payload.response.NewVehicleServiceResponse;
 import com.binple.servicebook.service.VehicleServiceService;
 
@@ -37,7 +39,8 @@ public class VehicleServiceController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid EditVehicleServiceRequest request) {
+  public ResponseEntity<EditVehicleServiceResponse> update(@PathVariable Long id,
+      @RequestBody @Valid EditVehicleServiceRequest request) {
     return service.update(id, request);
   }
 
