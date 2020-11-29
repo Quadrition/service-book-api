@@ -1,8 +1,8 @@
 package com.binple.servicebook.api;
 
-import javax.naming.OperationNotSupportedException;
 import javax.validation.Valid;
 
+import com.binple.servicebook.payload.request.AccountLoginRequest;
 import com.binple.servicebook.payload.request.AccountRegisterRequest;
 import com.binple.servicebook.payload.response.AccountRegisterResponse;
 import com.binple.servicebook.service.AuthenticationService;
@@ -31,7 +31,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<Object> login() throws OperationNotSupportedException {
-    return service.login();
+  public ResponseEntity<String> login(@RequestBody @Valid AccountLoginRequest request) {
+    return service.login(request);
   }
 }

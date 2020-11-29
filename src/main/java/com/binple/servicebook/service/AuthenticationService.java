@@ -7,11 +7,10 @@ import static com.binple.servicebook.security.jwt.Constants.SECREY_KEY;
 import java.util.Date;
 import java.util.Optional;
 
-import javax.naming.OperationNotSupportedException;
-
 import com.binple.servicebook.exception.AccountAlreadyExistsException;
 import com.binple.servicebook.model.Account;
 import com.binple.servicebook.model.Client;
+import com.binple.servicebook.payload.request.AccountLoginRequest;
 import com.binple.servicebook.payload.request.AccountRegisterRequest;
 import com.binple.servicebook.payload.response.AccountRegisterResponse;
 import com.binple.servicebook.repository.AccountRepository;
@@ -74,7 +73,16 @@ public class AuthenticationService {
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
-  public ResponseEntity<Object> login() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
+  public ResponseEntity<String> login(AccountLoginRequest request) {
+    Authentication authentication = authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    String token = Jwts.builder().setIssuer(PROVIDER).setSubject(request.getEmail()).setIssuedAt(new Date())
+        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .signWith(SignatureAlgorithm.HS512, SECREY_KEY).compact();
+
+    return new ResponseEntity<>(token, HttpStatus.OK);
   }
 }
