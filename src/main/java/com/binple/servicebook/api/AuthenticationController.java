@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import com.binple.servicebook.payload.request.AccountLoginRequest;
 import com.binple.servicebook.payload.request.ClientRegisterRequest;
-import com.binple.servicebook.payload.response.AccountRegisterResponse;
+import com.binple.servicebook.payload.response.ClientRegisterResponse;
 import com.binple.servicebook.service.AuthenticationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<AccountRegisterResponse> register(@RequestBody @Valid ClientRegisterRequest request) {
+  public ResponseEntity<ClientRegisterResponse> register(@RequestBody @Valid ClientRegisterRequest request) {
     return service.register(request);
   }
 

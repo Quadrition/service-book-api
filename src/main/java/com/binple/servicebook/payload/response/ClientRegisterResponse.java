@@ -2,7 +2,7 @@ package com.binple.servicebook.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class AccountRegisterResponse {
+public class ClientRegisterResponse {
 
   @JsonProperty("email")
   protected String email;
@@ -16,7 +16,7 @@ public class AccountRegisterResponse {
   @JsonProperty("token")
   private String token;
 
-  protected AccountRegisterResponse() {
+  protected ClientRegisterResponse() {
 
   }
 

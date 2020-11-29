@@ -12,7 +12,7 @@ import com.binple.servicebook.model.Account;
 import com.binple.servicebook.model.Client;
 import com.binple.servicebook.payload.request.AccountLoginRequest;
 import com.binple.servicebook.payload.request.ClientRegisterRequest;
-import com.binple.servicebook.payload.response.AccountRegisterResponse;
+import com.binple.servicebook.payload.response.ClientRegisterResponse;
 import com.binple.servicebook.repository.AccountRepository;
 
 import org.modelmapper.ModelMapper;
@@ -46,7 +46,7 @@ public class AuthenticationService {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-  public ResponseEntity<AccountRegisterResponse> register(ClientRegisterRequest request) {
+  public ResponseEntity<ClientRegisterResponse> register(ClientRegisterRequest request) {
 
     Optional<Account> entity = repository.findByEmail(request.getEmail());
 
@@ -67,7 +67,7 @@ public class AuthenticationService {
         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
         .signWith(SignatureAlgorithm.HS512, SECREY_KEY).compact();
 
-    AccountRegisterResponse response = modelMapper.map(account, AccountRegisterResponse.class);
+    ClientRegisterResponse response = modelMapper.map(account, ClientRegisterResponse.class);
     response.setToken(token);
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
