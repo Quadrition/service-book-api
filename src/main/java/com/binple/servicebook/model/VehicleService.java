@@ -62,4 +62,8 @@ public class VehicleService extends Model {
   public ServiceStation getServiceStation() {
     return serviceStation;
   }
+
+  public void setServiceStation(ServiceStation serviceStation) {
+    this.serviceStation = serviceStation;
+  }
 }

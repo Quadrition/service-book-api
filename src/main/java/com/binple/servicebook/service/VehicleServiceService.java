@@ -4,14 +4,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.binple.servicebook.exception.AccountNotFoundException;
 import com.binple.servicebook.exception.VehicleNotFoundException;
 import com.binple.servicebook.exception.VehicleServiceNotFoundException;
+import com.binple.servicebook.model.Account;
+import com.binple.servicebook.model.ServiceStation;
 import com.binple.servicebook.model.Vehicle;
 import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
 import com.binple.servicebook.payload.request.NewVehicleServiceRequest;
 import com.binple.servicebook.payload.response.EditVehicleServiceResponse;
 import com.binple.servicebook.payload.response.NewVehicleServiceResponse;
 import com.binple.servicebook.payload.response.SelectVehicleServiceResponse;
+import com.binple.servicebook.repository.AccountRepository;
 import com.binple.servicebook.repository.VehicleRepository;
 import com.binple.servicebook.repository.VehicleServiceRepository;
 
@@ -19,6 +23,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,18 +32,29 @@ public class VehicleServiceService {
 
   private final VehicleServiceRepository repository;
   private final VehicleRepository vehicleRepository;
+  private final AccountRepository accountRepository;
   private final ModelMapper modelMapper;
 
   @Autowired
   public VehicleServiceService(VehicleServiceRepository repository, VehicleRepository vehicleRepository,
-      ModelMapper modelMapper) {
+      AccountRepository accountRepository, ModelMapper modelMapper) {
     this.repository = repository;
     this.vehicleRepository = vehicleRepository;
+    this.accountRepository = accountRepository;
     this.modelMapper = modelMapper;
   }
 
-  // TODO insert logged service station
   public ResponseEntity<NewVehicleServiceResponse> insert(Long vehicleId, NewVehicleServiceRequest request) {
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    Optional<Account> entity = accountRepository.findByEmail(user.getUsername());
+
+    if (!entity.isPresent()) {
+      throw new AccountNotFoundException("Provided account is not found in the database");
+    }
+
+    ServiceStation serviceStation = (ServiceStation) entity.get();
+
     Optional<Vehicle> vehicleEntity = vehicleRepository.findById(vehicleId);
 
     if (!vehicleEntity.isPresent()) {
@@ -45,6 +62,7 @@ public class VehicleServiceService {
     } else {
       com.binple.servicebook.model.VehicleService vehicleService = modelMapper.map(request,
           com.binple.servicebook.model.VehicleService.class);
+      vehicleService.setServiceStation(serviceStation);
 
       Vehicle vehicle = vehicleEntity.get();
       vehicle.getSevices().add(vehicleService);
