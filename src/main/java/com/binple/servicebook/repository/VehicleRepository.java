@@ -15,5 +15,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
   Optional<Vehicle> findByChassisNumberAndIdNot(String chassisNumber, Long id);
 
-  Set<Vehicle> findByChassisNumberLike(String chassisNumber);
+  Set<Vehicle> findByChassisNumberContaining(String chassisNumber);
 }

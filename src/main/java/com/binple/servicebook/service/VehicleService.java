@@ -69,7 +69,7 @@ public class VehicleService {
 
   public ResponseEntity<Set<SearchVehicleResponse>> search(String pattern) {
 
-    Set<Vehicle> vehicles = repository.findByChassisNumberLike(pattern);
+    Set<Vehicle> vehicles = repository.findByChassisNumberContaining(pattern);
 
     return new ResponseEntity<>(vehicles.stream().map(vehicle -> modelMapper.map(vehicle, SearchVehicleResponse.class))
         .collect(Collectors.toSet()), HttpStatus.OK);
