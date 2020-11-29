@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.binple.servicebook.exception.AccountNotFoundException;
+import com.binple.servicebook.exception.EditVehicleServiceNotAllowedException;
 import com.binple.servicebook.exception.VehicleNotFoundException;
 import com.binple.servicebook.exception.VehicleServiceNotFoundException;
 import com.binple.servicebook.model.Account;
@@ -73,14 +74,29 @@ public class VehicleServiceService {
     }
   }
 
-  // TODO insert service station check
   public ResponseEntity<EditVehicleServiceResponse> update(Long id, EditVehicleServiceRequest request) {
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    Optional<Account> accountEntity = accountRepository.findByEmail(user.getUsername());
+
+    if (!accountEntity.isPresent()) {
+      throw new AccountNotFoundException("Provided account is not found in the database");
+    }
+
+    ServiceStation serviceStation = (ServiceStation) accountEntity.get();
+
     Optional<com.binple.servicebook.model.VehicleService> entity = repository.findById(id);
 
     if (!entity.isPresent()) {
       throw new VehicleServiceNotFoundException("Vehicle service with the given id does not exists");
     } else {
       com.binple.servicebook.model.VehicleService vehicleService = entity.get();
+
+      if (vehicleService.getServiceStation() != serviceStation) {
+        throw new EditVehicleServiceNotAllowedException(
+            "Service station does not have an access to edit this vehicle service");
+      }
+
       modelMapper.map(request, vehicleService);
 
       repository.save(vehicleService);
