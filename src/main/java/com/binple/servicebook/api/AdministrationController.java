@@ -1,12 +1,16 @@
 package com.binple.servicebook.api;
 
 import javax.naming.OperationNotSupportedException;
+import javax.validation.Valid;
 
+import com.binple.servicebook.payload.request.ServiceStationRegisterRequest;
+import com.binple.servicebook.payload.response.ServiceStationRegisterResponse;
 import com.binple.servicebook.service.AdministrationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +26,9 @@ public class AdministrationController {
   }
 
   @PostMapping("/register-service-station")
-  public ResponseEntity<Object> registerServiceStation() throws OperationNotSupportedException {
-    return service.registerServiceStation();
+  public ResponseEntity<ServiceStationRegisterResponse> registerServiceStation(
+      @RequestBody @Valid ServiceStationRegisterRequest request) {
+    return service.registerServiceStation(request);
   }
 
   @PostMapping("/register-admin")
