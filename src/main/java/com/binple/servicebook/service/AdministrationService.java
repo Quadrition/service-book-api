@@ -2,12 +2,13 @@ package com.binple.servicebook.service;
 
 import java.util.Optional;
 
-import javax.naming.OperationNotSupportedException;
-
 import com.binple.servicebook.exception.AccountAlreadyExistsException;
 import com.binple.servicebook.model.Account;
+import com.binple.servicebook.model.Administrator;
 import com.binple.servicebook.model.ServiceStation;
+import com.binple.servicebook.payload.request.AdministratorRegisterRequest;
 import com.binple.servicebook.payload.request.ServiceStationRegisterRequest;
+import com.binple.servicebook.payload.response.AdministratorRegisterResponse;
 import com.binple.servicebook.payload.response.ServiceStationRegisterResponse;
 import com.binple.servicebook.repository.AccountRepository;
 
@@ -47,7 +48,17 @@ public class AdministrationService {
     return new ResponseEntity<>(modelMapper.map(account, ServiceStationRegisterResponse.class), HttpStatus.CREATED);
   }
 
-  public ResponseEntity<Object> registerAdministrator() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
+  public ResponseEntity<AdministratorRegisterResponse> registerAdministrator(AdministratorRegisterRequest request) {
+    Optional<Account> entity = repository.findByEmail(request.getEmail());
+
+    if (entity.isPresent()) {
+      throw new AccountAlreadyExistsException("Account with the given email already exists");
+    }
+
+    Account account = modelMapper.map(request, Administrator.class);
+    account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+    repository.save(account);
+
+    return new ResponseEntity<>(modelMapper.map(account, AdministratorRegisterResponse.class), HttpStatus.CREATED);
   }
 }

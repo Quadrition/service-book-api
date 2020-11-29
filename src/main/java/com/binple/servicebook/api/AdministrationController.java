@@ -1,9 +1,10 @@
 package com.binple.servicebook.api;
 
-import javax.naming.OperationNotSupportedException;
 import javax.validation.Valid;
 
+import com.binple.servicebook.payload.request.AdministratorRegisterRequest;
 import com.binple.servicebook.payload.request.ServiceStationRegisterRequest;
+import com.binple.servicebook.payload.response.AdministratorRegisterResponse;
 import com.binple.servicebook.payload.response.ServiceStationRegisterResponse;
 import com.binple.servicebook.service.AdministrationService;
 
@@ -32,7 +33,8 @@ public class AdministrationController {
   }
 
   @PostMapping("/register-admin")
-  public ResponseEntity<Object> registerAdministrator() throws OperationNotSupportedException {
-    return service.registerAdministrator();
+  public ResponseEntity<AdministratorRegisterResponse> registerAdministrator(
+      @RequestBody @Valid AdministratorRegisterRequest request) {
+    return service.registerAdministrator(request);
   }
 }
