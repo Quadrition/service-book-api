@@ -3,7 +3,7 @@ package com.binple.servicebook.api;
 import javax.validation.Valid;
 
 import com.binple.servicebook.payload.request.AccountLoginRequest;
-import com.binple.servicebook.payload.request.AccountRegisterRequest;
+import com.binple.servicebook.payload.request.ClientRegisterRequest;
 import com.binple.servicebook.payload.response.AccountRegisterResponse;
 import com.binple.servicebook.service.AuthenticationService;
 
@@ -26,7 +26,7 @@ public class AuthenticationController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<AccountRegisterResponse> register(@RequestBody @Valid AccountRegisterRequest request) {
+  public ResponseEntity<AccountRegisterResponse> register(@RequestBody @Valid ClientRegisterRequest request) {
     return service.register(request);
   }
 

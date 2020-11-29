@@ -11,7 +11,7 @@ import com.binple.servicebook.exception.AccountAlreadyExistsException;
 import com.binple.servicebook.model.Account;
 import com.binple.servicebook.model.Client;
 import com.binple.servicebook.payload.request.AccountLoginRequest;
-import com.binple.servicebook.payload.request.AccountRegisterRequest;
+import com.binple.servicebook.payload.request.ClientRegisterRequest;
 import com.binple.servicebook.payload.response.AccountRegisterResponse;
 import com.binple.servicebook.repository.AccountRepository;
 
@@ -46,7 +46,7 @@ public class AuthenticationService {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-  public ResponseEntity<AccountRegisterResponse> register(AccountRegisterRequest request) {
+  public ResponseEntity<AccountRegisterResponse> register(ClientRegisterRequest request) {
 
     Optional<Account> entity = repository.findByEmail(request.getEmail());
 
