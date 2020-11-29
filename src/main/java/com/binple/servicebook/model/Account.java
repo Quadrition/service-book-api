@@ -23,7 +23,7 @@ public class Account extends Model {
 
   @NotBlank(message = "Password cannot be blank")
   @Size(max = 60, message = "Password cannot have more than 60 characters")
-  @Column(columnDefinition = "BINARY", nullable = false)
+  @Column(columnDefinition = "BINARY(60)", nullable = false)
   protected String password;
 
   protected Account() {
@@ -41,5 +41,9 @@ public class Account extends Model {
 
   public String getPassword() {
     return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }
