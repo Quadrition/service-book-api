@@ -71,7 +71,7 @@ public class VehicleService {
 
     Page<Vehicle> vehicles = repository.findByChassisNumberContaining(pattern, pageable);
 
-    return new ResponseEntity<>(
-        vehicles.map((Vehicle vehicle) -> modelMapper.map(vehicle, SearchVehicleResponse.class)), HttpStatus.OK);
+    return new ResponseEntity<>(vehicles.map(vehicle -> modelMapper.map(vehicle, SearchVehicleResponse.class)),
+        HttpStatus.OK);
   }
 }

@@ -1,7 +1,5 @@
 package com.binple.servicebook.api;
 
-import java.util.Set;
-
 import javax.validation.Valid;
 
 import com.binple.servicebook.payload.request.EditVehicleServiceRequest;
@@ -12,6 +10,8 @@ import com.binple.servicebook.payload.response.SelectVehicleServiceResponse;
 import com.binple.servicebook.service.VehicleServiceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +46,7 @@ public class VehicleServiceController {
   }
 
   @GetMapping("/all")
-  public ResponseEntity<Set<SelectVehicleServiceResponse>> select(@RequestParam Long vehicleId) {
-    return service.select(vehicleId);
+  public ResponseEntity<Page<SelectVehicleServiceResponse>> select(@RequestParam Long vehicleId, Pageable pageable) {
+    return service.select(vehicleId, pageable);
   }
 }

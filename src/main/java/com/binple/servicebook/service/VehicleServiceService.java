@@ -1,8 +1,6 @@
 package com.binple.servicebook.service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.binple.servicebook.exception.AccountNotFoundException;
 import com.binple.servicebook.exception.EditVehicleServiceNotAllowedException;
@@ -22,6 +20,8 @@ import com.binple.servicebook.repository.VehicleServiceRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -106,17 +106,11 @@ public class VehicleServiceService {
     }
   }
 
-  public ResponseEntity<Set<SelectVehicleServiceResponse>> select(Long vehicleId) {
-    Optional<Vehicle> vehicleEntity = vehicleRepository.findById(vehicleId);
+  public ResponseEntity<Page<SelectVehicleServiceResponse>> select(Long vehicleId, Pageable pageable) {
+    Page<com.binple.servicebook.model.VehicleService> vehicleServices = repository.findByVehicle(vehicleId, pageable);
 
-    if (!vehicleEntity.isPresent()) {
-      throw new VehicleNotFoundException("Vehicle with the given id does not exists");
-    } else {
-      Vehicle vehicle = vehicleEntity.get();
-
-      return new ResponseEntity<>(vehicle.getSevices().stream()
-          .map(vehicleService -> modelMapper.map(vehicleService, SelectVehicleServiceResponse.class))
-          .collect(Collectors.toSet()), HttpStatus.OK);
-    }
+    return new ResponseEntity<>(
+        vehicleServices.map(vehicleService -> modelMapper.map(vehicleService, SelectVehicleServiceResponse.class)),
+        HttpStatus.OK);
   }
 }
