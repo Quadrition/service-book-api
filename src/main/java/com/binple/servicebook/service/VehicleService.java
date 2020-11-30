@@ -1,8 +1,6 @@
 package com.binple.servicebook.service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.binple.servicebook.exception.VehicleAlreadyExistsException;
 import com.binple.servicebook.exception.VehicleNotFoundException;
@@ -16,6 +14,8 @@ import com.binple.servicebook.repository.VehicleRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -67,11 +67,11 @@ public class VehicleService {
     }
   }
 
-  public ResponseEntity<Set<SearchVehicleResponse>> search(String pattern) {
+  public ResponseEntity<Page<SearchVehicleResponse>> search(String pattern, Pageable pageable) {
 
-    Set<Vehicle> vehicles = repository.findByChassisNumberContaining(pattern);
+    Page<Vehicle> vehicles = repository.findByChassisNumberContaining(pattern, pageable);
 
-    return new ResponseEntity<>(vehicles.stream().map(vehicle -> modelMapper.map(vehicle, SearchVehicleResponse.class))
-        .collect(Collectors.toSet()), HttpStatus.OK);
+    return new ResponseEntity<>(
+        vehicles.map((Vehicle vehicle) -> modelMapper.map(vehicle, SearchVehicleResponse.class)), HttpStatus.OK);
   }
 }

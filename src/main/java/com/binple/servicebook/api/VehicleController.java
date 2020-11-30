@@ -1,7 +1,5 @@
 package com.binple.servicebook.api;
 
-import java.util.Set;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -13,6 +11,8 @@ import com.binple.servicebook.payload.response.SearchVehicleResponse;
 import com.binple.servicebook.service.VehicleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,8 +48,8 @@ public class VehicleController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<Set<SearchVehicleResponse>> search(
-      @RequestParam @Pattern(regexp = "^[a-zA-Z0-9]{5,}$") String pattern) {
-    return service.search(pattern);
+  public ResponseEntity<Page<SearchVehicleResponse>> search(
+      @RequestParam @Pattern(regexp = "^[a-zA-Z0-9]{5,}$") String pattern, Pageable pageable) {
+    return service.search(pattern, pageable);
   }
 }
