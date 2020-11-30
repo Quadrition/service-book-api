@@ -1,11 +1,13 @@
 package com.binple.servicebook.payload.response;
 
-import com.binple.servicebook.model.ServiceStation;
 import com.binple.servicebook.model.VehicleServiceType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EditVehicleServiceResponse {
+
+  @JsonProperty("id")
+  private Long id;
 
   @JsonProperty("type")
   private VehicleServiceType type;
@@ -18,10 +20,14 @@ public class EditVehicleServiceResponse {
   private java.time.LocalDate date;
 
   @JsonProperty("serviceStation")
-  private ServiceStation serviceStation;
+  private ServiceStationResponse serviceStation;
 
   protected EditVehicleServiceResponse() {
 
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public VehicleServiceType getType() {
@@ -34,5 +40,9 @@ public class EditVehicleServiceResponse {
 
   public java.time.LocalDate getDate() {
     return date;
+  }
+
+  public ServiceStationResponse getServiceStation() {
+    return serviceStation;
   }
 }

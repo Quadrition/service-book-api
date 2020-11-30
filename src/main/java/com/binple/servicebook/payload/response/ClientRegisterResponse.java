@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClientRegisterResponse {
 
+  @JsonProperty("id")
+  private Long id;
+
   @JsonProperty("email")
-  protected String email;
+  private String email;
 
   @JsonProperty("firstName")
   private String firstName;
@@ -18,6 +21,10 @@ public class ClientRegisterResponse {
 
   protected ClientRegisterResponse() {
 
+  }
+
+  public Long getId() {
+    return id;
   }
 
   public String getEmail() {

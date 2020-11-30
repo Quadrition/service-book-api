@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SelectVehicleServiceResponse {
 
+  @JsonProperty("id")
+  private Long id;
+
   @JsonProperty("type")
   private VehicleServiceType type;
 
@@ -23,6 +26,10 @@ public class SelectVehicleServiceResponse {
 
   }
 
+  public Long getId() {
+    return id;
+  }
+
   public VehicleServiceType getType() {
     return type;
   }
@@ -37,36 +44,5 @@ public class SelectVehicleServiceResponse {
 
   public ServiceStationResponse getServiceStation() {
     return serviceStation;
-  }
-
-  public class ServiceStationResponse {
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("address")
-    private String address;
-
-    @JsonProperty("city")
-    private String city;
-
-    @JsonProperty("imageName")
-    private String imageName;
-
-    protected ServiceStationResponse() {
-
-    }
-
-    public String getName() {
-      return name;
-    }
-
-    public String getAddress() {
-      return address;
-    }
-
-    public String getCity() {
-      return city;
-    }
   }
 }

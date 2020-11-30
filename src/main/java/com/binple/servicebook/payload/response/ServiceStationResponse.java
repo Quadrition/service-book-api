@@ -2,13 +2,7 @@ package com.binple.servicebook.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ServiceStationRegisterResponse {
-
-  @JsonProperty("id")
-  private Long id;
-
-  @JsonProperty("email")
-  private String email;
+public class ServiceStationResponse {
 
   @JsonProperty("name")
   private String name;
@@ -22,16 +16,8 @@ public class ServiceStationRegisterResponse {
   @JsonProperty("imageName")
   private String imageName;
 
-  protected ServiceStationRegisterResponse() {
+  protected ServiceStationResponse() {
 
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getEmail() {
-    return email;
   }
 
   public String getName() {

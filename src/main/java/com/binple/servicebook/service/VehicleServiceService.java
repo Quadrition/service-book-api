@@ -68,6 +68,7 @@ public class VehicleServiceService {
       Vehicle vehicle = vehicleEntity.get();
       vehicle.getSevices().add(vehicleService);
 
+      repository.save(vehicleService);
       vehicleRepository.save(vehicle);
 
       return new ResponseEntity<>(modelMapper.map(vehicleService, NewVehicleServiceResponse.class), HttpStatus.CREATED);
