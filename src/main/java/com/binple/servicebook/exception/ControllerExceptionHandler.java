@@ -54,6 +54,20 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
   }
 
+  @ExceptionHandler(VehicleNotFoundInAccountException.class)
+  protected ResponseEntity<Object> handleVehicleNotFoundInAccountException(VehicleNotFoundInAccountException ex,
+      WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(VehicleAlreadyInAccountException.class)
+  protected ResponseEntity<Object> handleVehicleAlreadyInAccountException(VehicleAlreadyInAccountException ex,
+      WebRequest request) {
+
+    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
   @ExceptionHandler(ConstraintViolationException.class)
   protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex,
       WebRequest request) {

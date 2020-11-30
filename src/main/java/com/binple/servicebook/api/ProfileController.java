@@ -1,7 +1,5 @@
 package com.binple.servicebook.api;
 
-import javax.naming.OperationNotSupportedException;
-
 import com.binple.servicebook.service.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,8 @@ public class ProfileController {
     return service.addVehicle(vehicleId);
   }
 
-  @PostMapping
-  public ResponseEntity<Object> removeVehicleService() throws OperationNotSupportedException {
-    return service.removeVehicleService();
+  @PostMapping("/remove-vehicle")
+  public ResponseEntity<Void> removeVehicle(@RequestParam Long vehicleId) {
+    return service.removeVehicle(vehicleId);
   }
 }
