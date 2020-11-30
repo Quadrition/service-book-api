@@ -4,6 +4,7 @@ import com.binple.servicebook.service.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,11 +21,13 @@ public class ProfileController {
     this.service = service;
   }
 
+  @PreAuthorize("hasRole('CLIENT')")
   @PostMapping("/add-vehicle")
   public ResponseEntity<Void> addVehicle(@RequestParam Long vehicleId) {
     return service.addVehicle(vehicleId);
   }
 
+  @PreAuthorize("hasRole('CLIENT')")
   @PostMapping("/remove-vehicle")
   public ResponseEntity<Void> removeVehicle(@RequestParam Long vehicleId) {
     return service.removeVehicle(vehicleId);

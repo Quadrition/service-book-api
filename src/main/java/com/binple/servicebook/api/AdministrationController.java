@@ -10,6 +10,7 @@ import com.binple.servicebook.service.AdministrationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,14 @@ public class AdministrationController {
     this.service = service;
   }
 
+  @PreAuthorize("hasRole('ADMINISTRATOR')")
   @PostMapping("/register-service-station")
   public ResponseEntity<ServiceStationRegisterResponse> registerServiceStation(
       @RequestBody @Valid ServiceStationRegisterRequest request) {
     return service.registerServiceStation(request);
   }
 
+  @PreAuthorize("hasRole('ADMINISTRATOR')")
   @PostMapping("/register-admin")
   public ResponseEntity<AdministratorRegisterResponse> registerAdministrator(
       @RequestBody @Valid AdministratorRegisterRequest request) {

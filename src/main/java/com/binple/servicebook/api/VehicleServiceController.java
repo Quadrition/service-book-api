@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,12 +34,14 @@ public class VehicleServiceController {
     this.service = service;
   }
 
+  @PreAuthorize("hasRole('SERVICESTATION')")
   @PostMapping
   public ResponseEntity<NewVehicleServiceResponse> insert(@RequestParam Long vehicleId,
       @RequestBody @Valid NewVehicleServiceRequest request) {
     return service.insert(vehicleId, request);
   }
 
+  @PreAuthorize("hasRole('SERVICESTATION')")
   @PutMapping("/{id}")
   public ResponseEntity<EditVehicleServiceResponse> update(@PathVariable Long id,
       @RequestBody @Valid EditVehicleServiceRequest request) {
