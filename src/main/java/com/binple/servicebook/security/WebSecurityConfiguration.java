@@ -40,8 +40,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter imple
   protected void configure(HttpSecurity http) throws Exception {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
         .antMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-        .antMatchers(HttpMethod.GET, "/api/vehicle/search", "/api/vehicle-service/all").permitAll().anyRequest()
-        .authenticated().and()
+        .antMatchers(HttpMethod.GET, "/api/vehicle/search", "/api/vehicle/*", "/api/vehicle-service/all").permitAll()
+        .anyRequest().authenticated().and()
         .addFilterBefore(new TokenAuthenticationFilter(accountDetailsService), BasicAuthenticationFilter.class).cors()
         .and().csrf().disable();
   }

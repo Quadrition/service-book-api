@@ -8,6 +8,7 @@ import com.binple.servicebook.payload.request.NewVehicleRequest;
 import com.binple.servicebook.payload.response.EditVehicleResponse;
 import com.binple.servicebook.payload.response.NewVehicleResponse;
 import com.binple.servicebook.payload.response.SearchVehicleResponse;
+import com.binple.servicebook.payload.response.SelectVehicleResponse;
 import com.binple.servicebook.service.VehicleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,11 @@ public class VehicleController {
   public ResponseEntity<EditVehicleResponse> update(@PathVariable Long id,
       @RequestBody @Valid EditVehicleRequest request) {
     return service.update(id, request);
+  }
+
+  @GetMapping("/{chassisNumber}")
+  public ResponseEntity<SelectVehicleResponse> selectByChassisNumber(@PathVariable String chassisNumber) {
+    return service.selectByChassisNumber(chassisNumber);
   }
 
   @GetMapping("/search")

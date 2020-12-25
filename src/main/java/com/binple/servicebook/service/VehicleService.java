@@ -10,6 +10,7 @@ import com.binple.servicebook.payload.request.NewVehicleRequest;
 import com.binple.servicebook.payload.response.EditVehicleResponse;
 import com.binple.servicebook.payload.response.NewVehicleResponse;
 import com.binple.servicebook.payload.response.SearchVehicleResponse;
+import com.binple.servicebook.payload.response.SelectVehicleResponse;
 import com.binple.servicebook.repository.VehicleRepository;
 
 import org.modelmapper.ModelMapper;
@@ -65,6 +66,16 @@ public class VehicleService {
         return new ResponseEntity<>(modelMapper.map(vehicle, EditVehicleResponse.class), HttpStatus.OK);
       }
     }
+  }
+
+  public ResponseEntity<SelectVehicleResponse> selectByChassisNumber(String chassisNumber) {
+    Optional<Vehicle> entity = repository.findByChassisNumber(chassisNumber);
+
+    if (!entity.isPresent()) {
+      throw new VehicleNotFoundException("Vehicle with the given chassis number not found");
+    }
+
+    return new ResponseEntity<>(modelMapper.map(entity.get(), SelectVehicleResponse.class), HttpStatus.OK);
   }
 
   public ResponseEntity<Page<SearchVehicleResponse>> search(String pattern, Pageable pageable) {
